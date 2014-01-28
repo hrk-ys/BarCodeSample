@@ -8,12 +8,15 @@
 
 #import "BCViewController.h"
 
+#import "BCZXingViewController.h"
+
 #import "ZBarSDK.h"
+#import "ZXingObjC.h"
 
 #import "NKDBarcodeFramework.h"
 #import "UIImage-NKDBarcode.h"
 
-#import "RSUnifiedCodeGenerator.h"
+//#import "RSUnifiedCodeGenerator.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -30,6 +33,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView1;
 @property (weak, nonatomic) IBOutlet UIImageView *imaveView2;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView3;
 
 @property (nonatomic, retain) UIImageView* imageView;
 @end
@@ -43,22 +47,41 @@
     
     self.enableCapture = YES;
     
-    NSString* content = @"2588605061858";
-    NKDBarcode* code = nil;
-    code = [[NKDEAN13Barcode alloc] initWithContent:content
-                                      printsCaption:NO
-                                        andBarWidth:.013 * 166
-                                          andHeight:0.5 * 166
-                                        andFontSize:6
-                                      andCheckDigit:(char)-1];
+//    NSString* content = @"2588605061858";
+//    NKDBarcode* code = [[NKDEAN13Barcode alloc] initWithContent:content
+//                                                  printsCaption:NO
+//                                                    andBarWidth:.013 * 166
+//                                             ZXing          andHeight:0.5 * 166
+//                                                    andFontSize:6
+//                                                  andCheckDigit:(char)-1];
+    
+//    NSString* content = @"6331760100092962456";
+//    NKDBarcode* code = [[NKDCode128Barcode alloc] initWithContent:content
+//                                                    printsCaption:NO
+//                                                      andBarWidth:.013 * 166
+//                                                        andHeight:0.5 * 166
+//                                                      andFontSize:6
+//                                                    andCheckDigit:(char)-1];
+//    UIImage * generatedImage = [UIImage imageFromBarcode:code]; // ..or as a less accurate UIImage
+//
+//    self.imageView1.image = generatedImage;
     
     
-    UIImage * generatedImage = [UIImage imageFromBarcode:code]; // ..or as a less accurate UIImage
+//    self.imaveView2.image = [[RSUnifiedCodeGenerator codeGen] genCodeWithContents:content machineReadableCodeObjectType:AVMetadataObjectTypeCode128Code];
+//    
+//    NSError* error = nil;
+//    ZXMultiFormatWriter* writer = [ZXMultiFormatWriter writer];
+//    ZXBitMatrix* result = [writer encode:content
+//                                  format:kBarcodeFormatCode128
+//                                   width:self.imageView3.frame.size.width
+//                                  height:self.imageView3.frame.size.height
+//                                   error:&error];
+//    if (result) {
+//        CGImageRef image = [[ZXImage imageWithMatrix:result] cgimage];
+//        self.imageView3.image = [UIImage imageWithCGImage:image];
+//        
+//    }
 
-    self.imageView1.image = generatedImage;
-    
-    
-    self.imaveView2.image = [[RSUnifiedCodeGenerator codeGen] genCodeWithContents:content machineReadableCodeObjectType:AVMetadataObjectTypeEAN13Code];
     
 //    self.session = [[AVCaptureSession alloc] init];
 //    
@@ -216,10 +239,17 @@
                    config:ZBAR_CFG_ENABLE
                        to:0];
     
-    [self presentViewController:reader animated:YES completion:nil];
-    
-
+    [self.navigationController pushViewController:reader animated:YES];
 }
+
+- (IBAction)tapZXingButton:(id)sender {
+    
+    BCZXingViewController* c = [[BCZXingViewController alloc] init];
+    
+    [self.navigationController pushViewController:c animated:YES];
+//    ZXCapture* capture
+}
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSLog(@"info:%@", info);
